@@ -33,14 +33,45 @@ namespace FuturatsTest.Grid.Pathfinding
             if (!CanUnitFit(grid, unit, blockedMap, end)) return null;
 
             GridPathNode[,] nodes = CreateNodes(grid.Width, grid.Height);
-            GridPathNode startNode = nodes[start.x, start.y];
             GridPathNode endNode = nodes[end.x, end.y];
+
+            bool reachedEnd = Search(grid, unit, blockedMap, nodes, start, endNode, allowDiagonal, maxCost);
+            if (!reachedEnd) return null;
+
+            return CalculatePath(endNode);
+        }
+
+        public static Dictionary<Vector2Int, int> FindReachablePositions(GridManager grid, BaseUnit unit, Vector2Int start, bool avoidCurrentOccupancy, bool allowDiagonal, int maxCost)
+        {
+            Dictionary<Vector2Int, int> reachablePositions = new Dictionary<Vector2Int, int>();
+            if (!grid.InBounds(start)) return reachablePositions;
+
+            bool[,] blockedMap = grid.GetOccupancy().BuildBlockedMap(unit, avoidCurrentOccupancy);
+            GridPathNode[,] nodes = CreateNodes(grid.Width, grid.Height);
+
+            // No end node: the search spreads out until the movement points run out
+            Search(grid, unit, blockedMap, nodes, start, null, allowDiagonal, maxCost);
+
+            // Every node the search got to has a cost
+            foreach (GridPathNode node in nodes)
+            {
+                if (node.gCost != int.MaxValue)
+                {
+                    reachablePositions[node.GetPosition()] = node.gCost;
+                }
+            }
+            return reachablePositions;
+        }
+
+        private static bool Search(GridManager grid, BaseUnit unit, bool[,] blockedMap, GridPathNode[,] nodes, Vector2Int start, GridPathNode endNode, bool allowDiagonal, int maxCost)
+        {
+            GridPathNode startNode = nodes[start.x, start.y];
 
             List<GridPathNode> openList = new List<GridPathNode> { startNode };   // nodes still to check
             HashSet<GridPathNode> closedList = new HashSet<GridPathNode>();       // nodes already checked
 
             startNode.gCost = 0;
-            startNode.hCost = CalculateDistanceCost(startNode, endNode);
+            startNode.hCost = CalculateHCost(startNode, endNode);
             startNode.CalculateFCost();
 
             while (openList.Count > 0)
@@ -49,7 +80,7 @@ namespace FuturatsTest.Grid.Pathfinding
                 if (currentNode == endNode)
                 {
                     // Reached final node
-                    return CalculatePath(endNode);
+                    return true;
                 }
 
                 openList.Remove(currentNode);
@@ -80,7 +111,7 @@ namespace FuturatsTest.Grid.Pathfinding
                     {
                         neighbourNode.previousNode = currentNode;
                         neighbourNode.gCost = tentativeGCost;
-                        neighbourNode.hCost = CalculateDistanceCost(neighbourNode, endNode);
+                        neighbourNode.hCost = CalculateHCost(neighbourNode, endNode);
                         neighbourNode.CalculateFCost();
 
                         if (!openList.Contains(neighbourNode))
@@ -92,7 +123,7 @@ namespace FuturatsTest.Grid.Pathfinding
             }
 
             // Out of nodes on the openList
-            return null;
+            return false;
         }
 
         private static GridPathNode[,] CreateNodes(int width, int height)
@@ -159,6 +190,12 @@ namespace FuturatsTest.Grid.Pathfinding
         private static int CalculateStepCost(GridManager grid, BaseUnit unit, GridPathNode toNode)
         {
             return grid.GetCostForUnit(unit, toNode.GetPosition());
+        }
+
+        private static int CalculateHCost(GridPathNode node, GridPathNode endNode)
+        {
+            if (endNode == null) return 0;
+            return CalculateDistanceCost(node, endNode);
         }
 
         private static int CalculateDistanceCost(GridPathNode a, GridPathNode b)
