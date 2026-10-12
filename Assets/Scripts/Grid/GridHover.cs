@@ -5,73 +5,75 @@ using UnityEngine.InputSystem;
 using UnityEditor;
 #endif
 
-public class GridHover
+namespace FuturatsTest.Grid
 {
-
-    private GridManager grid;
-
-    private bool isGameHoverValid;
-    private bool isSceneHoverValid;
-    private Vector2Int gameHoverCell;
-    private Vector2Int sceneHoverCell;
-
-    public GridHover(GridManager grid)
+    public class GridHover
     {
-        this.grid = grid;
-    }
 
-    /// <summary>Game view: follow the mouse while playing.</summary>
-    public void UpdateGameHover()
-    {
-        if (!Application.isPlaying || !grid.showHover) return;
+        private GridManager grid;
 
-        Camera cam = Camera.main;
-        isGameHoverValid = cam != null && grid.TryGetCellFromRay(cam.ScreenPointToRay(GetMousePosition()), out gameHoverCell);
-    }
+        private bool isGameHoverValid;
+        private bool isSceneHoverValid;
+        private Vector2Int gameHoverCell;
+        private Vector2Int sceneHoverCell;
+
+        public GridHover(GridManager grid)
+        {
+            this.grid = grid;
+        }
+
+        public void UpdateGameHover()
+        {
+            if (!Application.isPlaying || !grid.showHover) return;
+
+            Camera cam = Camera.main;
+            isGameHoverValid = cam != null && grid.TryGetCellFromRay(cam.ScreenPointToRay(GetMousePosition()), out gameHoverCell);
+        }
 
 #if UNITY_EDITOR
-    public void OnSceneGUI(SceneView view)
-    {
-        if (!grid.showHover) return;
-        if (!view.wantsMouseMove) view.wantsMouseMove = true; // ask the Scene view to send mouse-move events
-
-        Event currentEvent = Event.current;
-        if (currentEvent.type == EventType.MouseLeaveWindow)
+        public void OnSceneGUI(SceneView view)
         {
-            isSceneHoverValid = false;
-            view.Repaint();
-            return;
-        }
-        if (currentEvent.type != EventType.MouseMove && currentEvent.type != EventType.MouseDrag) return;
+            if (!grid.showHover) return;
+            if (!view.wantsMouseMove) view.wantsMouseMove = true;
 
-        Ray ray = HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition);
-        bool isValid = grid.TryGetCellFromRay(ray, out Vector2Int cell);
+            Event currentEvent = Event.current;
+            if (currentEvent.type == EventType.MouseLeaveWindow)
+            {
+                isSceneHoverValid = false;
+                view.Repaint();
+                return;
+            }
+            if (currentEvent.type != EventType.MouseMove && currentEvent.type != EventType.MouseDrag) return;
 
-        // Only repaint when the hovered tile actually changes
-        if (isValid != isSceneHoverValid || cell != sceneHoverCell)
-        {
-            isSceneHoverValid = isValid;
-            sceneHoverCell = cell;
-            view.Repaint();
+            Ray ray = HandleUtility.GUIPointToWorldRay(currentEvent.mousePosition);
+            bool isValid = grid.TryGetCellFromRay(ray, out Vector2Int cell);
+
+            // Only repaint when the hovered tile actually changes
+            if (isValid != isSceneHoverValid || cell != sceneHoverCell)
+            {
+                isSceneHoverValid = isValid;
+                sceneHoverCell = cell;
+                view.Repaint();
+            }
         }
-    }
 #endif
 
-    public void DrawGizmos(Vector3 tileSize)
-    {
-        Gizmos.color = grid.hoverColor;
-        if (isSceneHoverValid)
+        public void DrawGizmos(Vector3 tileSize)
         {
-            Gizmos.DrawWireCube(grid.CellCenter(sceneHoverCell, grid.GroundHeight + 0.02f), tileSize);
+            Gizmos.color = grid.hoverColor;
+            if (isSceneHoverValid)
+            {
+                Gizmos.DrawWireCube(grid.CellCenter(sceneHoverCell, grid.GroundHeight + 0.02f), tileSize);
+            }
+            if (isGameHoverValid && Application.isPlaying)
+            {
+                Gizmos.DrawWireCube(grid.CellCenter(gameHoverCell, grid.GroundHeight + 0.02f), tileSize);
+            }
         }
-        if (isGameHoverValid && Application.isPlaying)
-        {
-            Gizmos.DrawWireCube(grid.CellCenter(gameHoverCell, grid.GroundHeight + 0.02f), tileSize);
-        }
-    }
 
-    private static Vector2 GetMousePosition()
-    {
-        return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
+        private static Vector2 GetMousePosition()
+        {
+            return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
+        }
     }
 }
