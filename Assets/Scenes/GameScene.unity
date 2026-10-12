@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -345,13 +346,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38659635, y: 0.5909347, z: -0.38405132, w: -0.59484804}
-  m_LocalPosition: {x: 50.831856, y: 47.71621, z: 19.554756}
+  m_LocalRotation: {x: 0.4777144, y: -0.5213339, z: 0.4777144, w: 0.5213339}
+  m_LocalPosition: {x: 30, y: 60, z: 16.934816}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 85, y: -90, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +397,25 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc935d3fc79ee8048b8f2496a72fd2d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveAction: {fileID: 9011421869642620986, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  zoomAction: {fileID: -4560792596994862346, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  moveSpeed: 10
+  zoomStep: 2
+  zoomSmoothness: 5
+  maxZoomIn: 100
+  maxZoomOut: 100
 --- !u!1 &347499075
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +973,7 @@ Transform:
   m_GameObject: {fileID: 1855824046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.6465387, y: 7.309485, z: 4.434}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -971,10 +991,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a9ed873a21fff4cafc627dc49a49ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectAction: {fileID: 8271965827462142958, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  deselectAction: {fileID: -1988783854840629556, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  pointAction: {fileID: -6538605257868177347, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   cam: {fileID: 0}
   maxRayDistance: 1000
-  showPath: 1
-  pathColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &2144012925
 GameObject:
   m_ObjectHideFlags: 0
@@ -985,6 +1006,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2144012927}
   - component: {fileID: 2144012926}
+  - component: {fileID: 2144012928}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -1004,8 +1026,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfccd2825fb34e844a72f2520c0f0675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 14
-  height: 14
+  width: 50
+  height: 50
   cellSize: 1
   groundMaterial: {fileID: 2100000, guid: 1218a714ce371ff47b0935bfdcd369d7, type: 2}
   materialModes: []
@@ -1013,7 +1035,7 @@ MonoBehaviour:
   hoverColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   showBlockedTiles: 0
   blockedColor: {r: 1, g: 0.06575269, b: 0, a: 0.9254902}
-  drawAllCells: 0
+  drawAllCells: 1
   tiles:
   - cell: {x: 9, y: 5}
     walkable: 0
@@ -1094,6 +1116,21 @@ Transform:
   - {fileID: 347499076}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2144012928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144012925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb7e6e48dfb86644ac783f3e3aa3e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionController: {fileID: 1855824048}
+  material: {fileID: 2100000, guid: 0e059e7904170f14abf5c2ef109d7acf, type: 2}
+  tileFill: 0.9
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1102,6 +1139,6 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 2144012927}
-  - {fileID: 116514843}
   - {fileID: 1855824047}
+  - {fileID: 116514843}
   - {fileID: 673853360}

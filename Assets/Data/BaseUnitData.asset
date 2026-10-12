@@ -15,8 +15,8 @@ MonoBehaviour:
   width: 2
   depth: 2
   defaultModel: {fileID: 7778313458411841082, guid: 354cae12d7d00d34786a7438d99e67dd, type: 3}
-  moveSpeed: 999
-  animationSpeed: 4
+  moveSpeed: 9999
+  animationSpeed: 10
   allowDiagonal: 1
   repathDelay: 0.4
   maxRepathAttempts: 8

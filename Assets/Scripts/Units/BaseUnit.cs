@@ -269,7 +269,7 @@ namespace FuturatsTest.Units
         }
 
 
-        /// <summary> Looks for a path around whoever is blocking the way /// </summary>
+        /// <summary> Looks for a path around whoever is blocking the way </summary>
         private bool TryFindDetour()
         {
             List<Vector2Int> detour = GridPathfinder.FindPath(grid, this, pivot, destination, true, data.allowDiagonal, remainingMovement);
@@ -310,6 +310,13 @@ namespace FuturatsTest.Units
             pivot = nextTile;
             isStepping = false;
             pathIndex++;
+        }
+
+        public Dictionary<Vector2Int, int> FindReachablePositions()
+        {
+            if (grid == null) return new Dictionary<Vector2Int, int>();
+
+            return GridPathfinder.FindReachablePositions(grid, this, pivot, false, data.allowDiagonal, data.moveSpeed);
         }
 
         #endregion
