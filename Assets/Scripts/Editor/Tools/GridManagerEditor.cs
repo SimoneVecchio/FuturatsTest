@@ -128,7 +128,7 @@ namespace FuturatsTest.Tools.Grid
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Block + Remove Prefab")) { SetWalkable(gm, false); SetPrefab(gm, null); }
+                if (GUILayout.Button("Remove Prefab")) SetPrefab(gm, null);
                 if (GUILayout.Button("Reset Tile(s)"))
                 {
                     SetWalkable(gm, true);
