@@ -1081,7 +1081,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAction: {fileID: 9011421869642620986, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   zoomAction: {fileID: -4560792596994862346, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  panButtonAction: {fileID: 3487259673434103628, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  panDeltaAction: {fileID: 6320228794562631699, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   moveSpeed: 10
+  mousePanSpeed: 0.05
   zoomStep: 2
   zoomSmoothness: 5
   maxZoomIn: 100
