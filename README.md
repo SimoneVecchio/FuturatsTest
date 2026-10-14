@@ -2,10 +2,10 @@
 
 ## Inputs
 
-Select/Move Unit - Left Click
-Deselect Unit - Right Click
-Camera Movement - WASD
-Zoom In/Out - Scroll Wheel
+- Select/Move Unit - Left Click
+- Deselect Unit - Right Click
+- Camera Movement - WASD
+- Zoom In/Out - Scroll Wheel
 
 ## GridManager
 
