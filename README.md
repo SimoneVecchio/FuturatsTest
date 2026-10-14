@@ -4,7 +4,7 @@
 
 - Select/Move Unit - Left Click
 - Deselect Unit - Right Click
-- Camera Movement - WASD
+- Camera Movement - WASD / Hold Scroll Wheel and drag
 - Zoom In/Out - Scroll Wheel
 
 ## GridManager
